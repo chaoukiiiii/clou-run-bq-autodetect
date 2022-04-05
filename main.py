@@ -76,6 +76,7 @@ def entry():
     schema=s,
     write_disposition=bigquery.WriteDisposition.WRITE_TRUNCATE,
     source_format=bigquery.SourceFormat.CSV,
+    field_delimiter=delimiter,
     skip_leading_rows=1,
     allow_jagged_rows=True
     )
