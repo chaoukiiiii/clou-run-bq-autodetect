@@ -68,7 +68,7 @@ def entry():
         print("Dataset {} is not found".format(dataset))
         return ("Error  there is No Dataset matchs the provided dataset variable.", 500)
     
-    l=pd.read_csv(uri, sep=delimiter, index_col=0, nrows=0).columns.tolist()
+    l=pd.read_csv(uri, sep=delimiter, index_col=0, nrows=0).reset_index().columns.tolist()
     print(l)
     s=[bigquery.SchemaField(i, "STRING") for i in l]
     # Setup the job to append to the table if it already exists and to autodetect the schema
