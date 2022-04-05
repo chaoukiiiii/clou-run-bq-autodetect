@@ -3,7 +3,7 @@ from flask import Flask, request
 from google.cloud import bigquery
 from google.cloud import storage
 from google.api_core.exceptions import NotFound
-
+import pandas as pd
 app = Flask(__name__)
 
 
@@ -67,12 +67,15 @@ def entry():
     except NotFound:
         print("Dataset {} is not found".format(dataset))
         return ("Error  there is No Dataset matchs the provided dataset variable.", 500)
+    
+    l=pd.read_csv(uri, sep=delimiter, index_col=0, nrows=0).columns.tolist()
+    s=[bigquery.SchemaField(i, "STRING") for i in l]
     # Setup the job to append to the table if it already exists and to autodetect the schema
     job_config = bigquery.LoadJobConfig(
+    schema=s,
     write_disposition=bigquery.WriteDisposition.WRITE_TRUNCATE,
     source_format=bigquery.SourceFormat.CSV,
-    skip_leading_rows=1,
-    autodetect=True
+    skip_leading_rows=1
     )
 
     # Run the load job
@@ -85,6 +88,7 @@ def entry():
     bucket_initial = storage_client.get_bucket(bucket)
     blobs = bucket_initial.list_blobs(prefix=folder+'/'+pattern)
     for i in blobs:
+        print(i)
         bucket_initial.rename_blob(i, new_name=i.name.replace(folder+'/', archive_folder+'/archived_'))
 
     print ("Archives files to ",bucket, " /",archive_folder,"/")
