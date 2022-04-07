@@ -80,7 +80,7 @@ def entry():
     skip_leading_rows=1,
     #allow_jagged_rows=True,
     allow_quoted_newlines=True,
-    quote=""
+    quote_character=""
     )
 
     # Run the load job
