@@ -79,8 +79,9 @@ def entry():
     field_delimiter=delimiter,
     skip_leading_rows=1,
     allow_jagged_rows=True,
-    allow_quoted_newlines=True
-    #quote_character="¤"
+    allow_quoted_newlines=True,
+    ignore_unknown_values=True,
+    quote_character="¤"
     )
 
     # Run the load job
